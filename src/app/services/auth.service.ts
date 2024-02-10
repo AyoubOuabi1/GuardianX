@@ -3,11 +3,12 @@ import {User} from "../models/user/user.module";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
+import {Role} from "../models/user/role.module";
 
 export interface AuthResponseData {
   id : number,
   email : string,
-  roles : string[],
+  role : Role,
 }
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,13 @@ export interface AuthResponseData {
 export class AuthService {
 
   AuthenticatedUser$  = new BehaviorSubject<User | null>(null);
-  _url : string = "http://localhost:8086/api/v1/auth/"
+  _url : string = "http://localhost:8080/api/v1/auth"
   constructor(private http : HttpClient,
               private router: Router) { }
 
 
   login(email: string, password: string): Observable<AuthResponseData> {
-    return this.http.post<AuthResponseData>(this._url,
+    return this.http.post<AuthResponseData>(`http://localhost:8080/api/v1/auth/authenticate`,
       {
         body : {email : email, password : password}
         },
@@ -37,13 +38,11 @@ export class AuthService {
           return throwError(() =>  new Error(errorMessage))
         }) ,
         tap(user => {
+          console.log(user)
           const extractedUser : User = {
             email: user.email,
             id: user.id,
-            role : {
-              name : user.roles.find(role => role.includes('ROLE')) || '',
-              permissions : user.roles.filter(permission => !permission.includes('ROLE'))
-            }
+            role : user.role
           }
            this.saveUserInLocalStorage(extractedUser);
            this.AuthenticatedUser$.next(extractedUser);

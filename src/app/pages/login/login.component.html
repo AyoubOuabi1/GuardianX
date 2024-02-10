@@ -24,15 +24,14 @@
             <form #formLogin="ngForm" (click)="onSubmit(formLogin)">
               <!-- Email input -->
               <div class="form-outline mb-4">
-                < <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="Email Address" ngModel #email="ngModel"
-                  name="email"
-                  required
-                  email>
+                       name="email" required email>
                 <div *ngIf="email.errors && formLogin.submitted" class="text-danger">
                   Email is required!
                 </div>
               </div>
+
 
               <!-- Password input -->
               <div class="form-outline mb-4">
