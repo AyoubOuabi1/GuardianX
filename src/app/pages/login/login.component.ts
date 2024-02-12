@@ -1,7 +1,5 @@
-import {Component, OnInit,OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs";
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
 
 @Component({
@@ -9,24 +7,15 @@ import {NgForm} from "@angular/forms";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit ,OnDestroy {
-   errorMeassge! : String;
-   authUserSub! : Subscription;
+export class LoginComponent implements OnInit  {
 
-   constructor(private authService: AuthService,
-               private router: Router) {
-   }
+
+   constructor(private authService: AuthService) {}
    ngOnInit() {
-     this.authUserSub = this.authService.AuthenticatedUser$.subscribe(user => {
-       if(user) {
-         this.router.navigate(['/home']);
-       }
-     })
+
    }
 
-   ngOnDestroy() {
-     this.authUserSub.unsubscribe();
-   }
+
 
    onSubmit(formLogin : NgForm){
       if (!formLogin.valid) {
@@ -35,13 +24,10 @@ export class LoginComponent implements OnInit ,OnDestroy {
       this.authService.login(
         formLogin.value.email, formLogin.value.password).subscribe({
           next: user => {
-            if(user) {
-              this.router.navigate(['/home']);
-            }
-
+              console.log(user);
           },
           error: error => {
-            this.errorMeassge = error.error.message;
+            console.log(error);
           }
         })
    }
