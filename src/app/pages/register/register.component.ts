@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {NgForm} from "@angular/forms";
 import {RegistrationDto} from "../../models/user/registrationDto.module";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,7 @@ import {RegistrationDto} from "../../models/user/registrationDto.module";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private router : Router) {}
   ngOnInit() {
 
   }
@@ -26,6 +27,7 @@ export class RegisterComponent {
     this.authService.register(user).subscribe({
       next: user => {
         console.log(user);
+        this.router.navigate(['home']);
       },
       error: error => {
         console.log(error);
