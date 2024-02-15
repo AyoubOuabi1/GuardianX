@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'admin', component: AdminpageComponent, canActivate: [roleGuard] },
   { path: 'user', component: UserpageComponent, canActivate: [roleGuard] },
-  { path: 'unauthorized', component: UnauthorizedComponent},
+  { path: 'unauthorized', component: UnauthorizedComponent, canActivate : [authGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 
